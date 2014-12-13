@@ -51,7 +51,6 @@ npm install coveralls --save
 npm install grunt-cli --save
 npm install mocha --save
 npm install mocha-lcov-reporter --save
-npm install supertest --save
 
 # installing new bower production components
 bower install angular --save

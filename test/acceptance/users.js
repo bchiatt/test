@@ -1,6 +1,7 @@
+/*
 'use strict';
 
-process.env.DB   = 'mongodb://localhost/testing-test';
+process.env.DB   = 'mongodb://localhost/hapiest-test';
 
 var expect  = require('chai').expect,
     cp      = require('child_process'),
@@ -14,7 +15,7 @@ describe('users', function(){
   });
 
   beforeEach(function(done){
-    cp.execFile(__dirname + '/../scripts/clean-db.sh', ['testing-test'], {cwd:__dirname + '/../scripts'}, function(err, stdout, stderr){
+    cp.execFile(__dirname + '/../scripts/clean-db.sh', ['hapiest-test'], {cwd:__dirname + '/../scripts'}, function(err, stdout, stderr){
       request(app)
       .post('/login')
       .send('email=bob@aol.com')
@@ -50,3 +51,4 @@ describe('users', function(){
     });
   });
 });
+*/

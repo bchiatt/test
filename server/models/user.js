@@ -1,36 +1,29 @@
 'use strict';
 
 var bcrypt = require('bcrypt'),
-    Mongo  = require('mongodb');
+    pg     = require('../postgres/manager');
 
-function User(){
+function User(obj){
+  this.username = obj.username;
 }
 
-Object.defineProperty(User, 'collection', {
-  get: function(){return global.mongodb.collection('users');}
-});
-
-User.findById = function(id, cb){
-  var _id = Mongo.ObjectID(id);
-  User.collection.findOne({_id:_id}, cb);
+User.register = function(obj, cb){
+  var user = new User(obj);
+  user.password = bcrypt.hashSync(obj.password, 10);
+  pg.query('insert into users (username, password) values ($1, $2) returning id', [user.username, user.password], cb);
 };
 
-User.register = function(o, cb){
-  User.collection.findOne({email:o.email}, function(err, user){
-    if(user || o.password.length < 3){return cb();}
-    o.password = bcrypt.hashSync(o.password, 10);
-    User.collection.save(o, cb);
-  });
-};
-
-User.login = function(o, cb){
-  User.collection.findOne({email:o.email}, function(err, user){
+User.login = function(obj, cb){
+  pg.query('select * from users where username = $1 limit 1', [obj.username], function(err, results){
+    var user = results.rows[0];
     if(!user){return cb();}
-    var isOk = bcrypt.compareSync(o.password, user.password);
-    if(!isOk){return cb();}
-    cb(null, user);
+
+    var isAuth = bcrypt.compareSync(obj.password, user.password);
+    if(!isAuth){return cb();}
+
+    delete user.password;
+    cb(user);
   });
 };
 
 module.exports = User;
-

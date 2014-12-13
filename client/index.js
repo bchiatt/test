@@ -1,8 +1,8 @@
 (function(){
   'use strict';
 
-  angular.module('testing', ['ui.router', 'LocalForageModule'])
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider){
+  angular.module('hapiest', ['ui.router', 'angularFileUpload'])
+  .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -10,9 +10,13 @@
     .state('register', {url:'/register', templateUrl:'/views/users/users.html', controller:'UsersCtrl'})
     .state('login',    {url:'/login',    templateUrl:'/views/users/users.html', controller:'UsersCtrl'})
     .state('logout',   {url:'/logout',   template:'',                           controller:'UsersCtrl'});
-
-    $localForageProvider.config({name:'testing', storeName:'cache', version:1.0});
-    $httpProvider.interceptors.push('HttpInterceptor');
   }])
-  .run(['User', function(User){}]);
+  .run(['$rootScope', '$http', function($rootScope, $http){
+    $http.get('/status').then(function(response){
+      $rootScope.rootuser = response.data;
+      $rootScope.$broadcast('auth', response.data);
+    }, function(){
+      $rootScope.rootuser = null;
+    });
+  }]);
 })();
