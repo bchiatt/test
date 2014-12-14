@@ -6,15 +6,5 @@
     "Brian Hiatt <brian.hiatt41@gmail.com>"
   ],
   "description": "The HAPIEST Template",
-  "license": "MIT",
-  "dependencies": {
-    "angular": "~1.3.6",
-    "angular-ui-router": "~0.2.13",
-    "foundation": "~5.4.7",
-    "fontawesome": "~4.2.0",
-    "underscore": "~1.7.0",
-    "jquery": "~2.1.1",
-    "toastr": "~2.1.0",
-    "ng-file-upload": "~2.0.4"
-  }
+  "license": "MIT"
 }
